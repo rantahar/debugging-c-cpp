@@ -1,2 +1,2 @@
 # python-debugging
-A one day course introducing methods of debugging Python code
+A one day course introducing methods of Debugging C code
