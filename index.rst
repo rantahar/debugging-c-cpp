@@ -19,21 +19,55 @@ Things about C/C++
    -
  - Types
    - protect from many issues
-   - many common problems result from overriding the type system
+   - often problems result from overriding the type system (casting pointers)
 
 
 Errors and Signals
 ------------------
 
+ - No built-in error handling. Print and error message and `exit(1)`
 
 
 Finding Memory Issues
 ---------------------
 
+There are many tools for identifying memory issues. Here we will use valgrind
+(https://valgrind.org/), a general tool for instrumenting and analysing
+compiled programs.
+
+Valgrind essentially wraps your program and intercepts calls to kernel
+functions. This means your code will run significantly slower, especially when
+full memory checks are enabled. It's recommended to use a small test case if
+your program usually takes a long time to run.
+
+
+.. code-block:: console
+
+      $ valgrind --leak-check=full --tool=memcheck ./memory
+
+Valgrind has many other tools, besides Memcheck. See https://valgrind.org/ for
+more details
 
 
 Debugging with gdb
 ------------------
+
+The Gnu debugger (gdb), and many other similar programs, allow you to stop your
+program and inspect the state different variables, or even modify them before
+continuing the run. This is useful for finding more complicated issues.
+
+Here are some useful gdb commands:
+
+  - **list:** Print a few lines of code around the current position.
+  - **where:** Print the current position and the functions that were called
+    to get there (same as the stack trace printed when an exception is raised).
+  - **next:** Execute the current line and move to the next one.
+  - **step:** If the line contains a function, move into it. Otherwise execute
+    the current line.
+  - **continue:** Run until the next `pdb.set_trace`
+  - **up**: Move to the function that called this one (up the stack).
+  - **down**: Move to the function called from this one (down the stack).
+  - **display variable:** Dispaly the value of a variable. It will be printed after each command.
 
 
 
