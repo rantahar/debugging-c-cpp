@@ -10,9 +10,46 @@ Debugging C/C++
    :maxdepth: 2
    :caption: Contents:
 
+Prerequisites
+-------------
+
+ - Familiarity with C or C++. You should have written C or C++ code,
+   compiled an executable and run it.
+ - Familiarity with a command line interface. You should know how to
+   move to a folder and list files. You can also use an IDE for
+   debugging, but we will not cover any specific IDE.
+    - See `here <>`_ for an introduction to the Linux shell.
+
+Installation
+------------
+
+ - You should have a C / C++ compiler installed.
+ - Please also install `Valgrind <>`_ on Linux or
+   `DrMemory <>`_ on Windows. See `installation instructions <>`_
+   for details.
+
+Learning Outcomes
+-----------------
+
+After this course you will
+ - Know which tools to use to inspect your code and find problems (or
+   know where to check which tools to use).
+ - Be able to use a debugger (after finding references online).
+ - Know what a segmentation fault is and be able to locate it.
+ - Be able to find memory leaks and other memory issues.
+
+
+Most of this course applies directly to Fortran and other compiled
+languages. Each language has their own quirks and common problems,
+but the same tools can be used to solve them.
+
+That said, in the first section we will talk about special the quirks of
+C and C++, which may or may not apply to other languages.
+
 
 Things about C/C++
 ------------------
+
 
  - Pointers
    - Memory problems are probably the most common errors
@@ -25,7 +62,9 @@ Things about C/C++
 Errors and Signals
 ------------------
 
- - No built-in error handling. Print and error message and `exit(1)`
+C has no built-in error handling, but there are libraries for this.
+Ultimately this comes down to printing an error message and calling
+`exit(1)` (or any other error code besides 1).
 
 
 Finding Memory Issues
