@@ -13,20 +13,22 @@ Debugging C/C++
 Prerequisites
 -------------
 
- - Familiarity with C or C++. You should have written C or C++ code,
+ - C or C++. You should have written C or C++ code,
    compiled an executable and run it.
- - Familiarity with a command line interface. You should know how to
-   move to a folder and list files. You can also use an IDE for
-   debugging, but we will not cover any specific IDE.
-    - See `here <>`_ for an introduction to the Linux shell.
+ - command line interface or VS Code. You should know how to
+   move to a folder, list files, compile
+ - See `here <https://aaltoscicomp.github.io/linux-shell/the-shell/>`_ for an introduction to the Linux shell.
 
 Installation
 ------------
 
  - You should have a C / C++ compiler installed.
- - Please also install `Valgrind <>`_ on Linux or
-   `DrMemory <>`_ on Windows. See `installation instructions <>`_
-   for details.
+ - Install a debugger.
+    - Linux and Mac: gdb. This is installed with C/C++ compilation tools.
+    - Windows: Visual Code with the C/C++ extension.
+ - Install a memory checker
+    - `Valgrind <https://valgrind.org/>`_ on Linux or Mac.
+    - `DrMemory <https://drmemory.org/page_install.html>`_ on Windows. You can also try this on other systems.
 
 Learning Outcomes
 -----------------
