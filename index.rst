@@ -28,7 +28,8 @@ Installation
     - Windows: Visual Code with the C/C++ extension.
  - Install a memory checker
     - `Valgrind <https://valgrind.org/>`_ on Linux or Mac.
-    - `DrMemory <https://drmemory.org/page_install.html>`_ on Windows. You can also try this on other systems.
+    - `DrMemory <https://drmemory.org/page_install.html>`_ on Windows. You can
+       also try this on other systems.
 
 Learning Outcomes
 -----------------
@@ -36,10 +37,9 @@ Learning Outcomes
 After this course you will
  - Know which tools to use to inspect your code and find problems (or
    know where to check which tools to use).
- - Be able to use a debugger (after finding references online).
  - Know what a segmentation fault is and be able to locate it.
+ - Be able to use a debugger (after finding references online).
  - Be able to find memory leaks and other memory issues.
-
 
 Most of this course applies directly to Fortran and other compiled
 languages. Each language has their own quirks and common problems,
@@ -52,6 +52,12 @@ C and C++, which may or may not apply to other languages.
 Things about C/C++
 ------------------
 
+Datatypes: Strong and static typing
+===================================
+
+C and C++ are strongly typed. This means you specify the type of each variable
+when it is first created and the type cannot be changed. This protect you from
+a lot of problems you might run into in other languages, but it 
 
  - Pointers
    - Memory problems are probably the most common errors
