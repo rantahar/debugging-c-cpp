@@ -24,12 +24,14 @@ Installation
 
  - You should have a C / C++ compiler installed.
  - Install a debugger.
+
     - Linux and Mac: gdb. This is installed with C/C++ compilation tools.
     - Windows: Visual Code with the C/C++ extension.
  - Install a memory checker
+
     - `Valgrind <https://valgrind.org/>`_ on Linux or Mac.
-    - `DrMemory <https://drmemory.org/page_install.html>`_ on Windows. You can
-       also try this on other systems.
+    - `DrMemory <https://drmemory.org/page_install.html>`_ on Windows.
+      You can also try this on other systems.
 
 Learning Outcomes
 -----------------
@@ -53,18 +55,50 @@ Things about C/C++
 ------------------
 
 Datatypes: Strong and static typing
-===================================
+...................................
 
 C and C++ are strongly typed. This means you specify the type of each variable
 when it is first created and the type cannot be changed. This protect you from
-a lot of problems you might run into in other languages, but it 
+a lot of problems you might run into in other languages.
 
- - Pointers
-   - Memory problems are probably the most common errors
-   -
- - Types
-   - protect from many issues
-   - often problems result from overriding the type system (casting pointers)
+That said, you can cast a pointer to a different type. Doing this can easily
+cause memory issues and is almost always a bad idea. The main reason you would
+ever want to do this has to do with micromanaging memory for a slight
+performance gain.
+
+Compilers will often assume that the type information that comes with pointers
+is correct. So if something works at optimization level 0 and 1, but you get
+a segfault on level 2 or 3, maybe you are casting a pointer?
+
+Pointers
+........
+
+Talking of pointers, they are commonly cited as the hardest thing to understand
+in C and C++. At its core, a pointer is a variable that contains an address in
+memory. In C, this is really all it is. In modern C++, you have a choice between
+a few pointer types that are all safer than the basic C pointer.
+
+Memory issues are probably the most common problems you will face in C, and are
+common in C++ as well. Memory issues include
+
+  - Segmentation faults: You program tries to read or write to the wrong place
+    in memory. These are generally easy to debug, since they happen on a
+    specific line in the code.
+  - Memory leaks: The program reserves memory and does not release it. If it
+    runs for a long time, this reduces system performance and may cause a crash.
+  - Misreads and -writes: The program uses the same memory for two different
+    things. Data gets overwritten incorrectly.
+
+C++ pointer types:
+ - std::unique_ptr: There is ever only one pointer that points to this memory.
+   The memory is automatically freed, so that memory does not leak.
+ - std::shared_ptr: A pointer that tracks references to the memory it points to.
+   When there are no more references, the memory is freed.
+ - std::weak_ptr: A reference to a std::shared_ptr that is not counted. This is
+   sometimes necessary to avoid circular dependencies, but should be avoided if
+   not otherwise.
+ - std::auto_ptr (deprecated since C++11): Automatically allocates memory and
+   releases it when the pointer goes out of scope.
 
 
 Errors and Signals
