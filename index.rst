@@ -74,9 +74,13 @@ Pointers
 ........
 
 Talking of pointers, they are commonly cited as the hardest thing to understand
-in C and C++. At its core, a pointer is a variable that contains an address in
-memory. In C, this is really all it is. In modern C++, you have a choice between
-a few pointer types that are all safer than the basic C pointer.
+in C and C++. The main problem with pointers is that they allow you to do bad
+things by mistake. In fact, you often have to actively do something (free
+memory) to avoid doing bad things.
+
+At its core, a pointer is a variable that contains an address in memory. In C,
+this is really all it is. In modern C++, you have a choice between a few
+pointer types that are all safer than the basic C pointer.
 
 Memory issues are probably the most common problems you will face in C, and are
 common in C++ as well. Memory issues include
@@ -101,16 +105,84 @@ C++ pointer types:
    releases it when the pointer goes out of scope.
 
 
-Errors and Signals
-------------------
+Errors and Exceptions
+---------------------
 
-C has no built-in error handling, but there are libraries for this.
-Ultimately this comes down to printing an error message and calling
-`exit(1)` (or any other error code besides 1).
+Manual error handling in C
+..........................
+
+C has no built-in error handling, but there are libraries for this. The most
+common approach is that each function returns and integer error code. By
+convention 0 means success and any other number refers to an error. The caller
+can check the error code and handle it.
+
+You can use an `enum` to give each error code a sensible name. You can also use
+an array to map each error code to a message string
+
+.. code-block:: C
+
+    enum ERROR_CODES {
+      MYLIB_SUCCESS,
+      MYLIB_IO_ERROR,
+      MYLIB_PARAMETER_ERROR,
+      MYLIB_LITERARY_ERROR,
+      MYLIB_OTHER_ERROR
+    };
+
+    string error_messages[] = {
+      "Success",
+      "An IO error was encountered.",
+      "My lib received an incorrect parameter.",
+      "A literary error was found in input parameters.",
+      "An unexpected error was encountered."
+    }
+
+In worst cases, when you don't think the program can recover, you can always
+call `exit(1)` (or any other error code besides 1). You should print and error
+message first.
+
+
+C++ Exceptions
+..............
+
+There is a bit more structure around this in C++. Especially, you can catch an
+exception and handle it in code.
+
+Throwing an exception looks like this:
+
+.. code-block:: C++
+
+    double divide(x, y){
+        if(y == 0){
+           throw "Division by 0 exception"
+        }
+        return x/y
+    }
+
+By default this will stop the program and print the message. The other option
+is to handle it in code using the `try` syntax:
+
+.. code-block:: C++
+
+      double try_to_divide(x, y){
+          try {
+            result = divide(x,y);
+            return result;
+          } catch (const char* message){
+
+            // Return infinity if dividing by zero
+            return x * std::numeric_limits<double>::infinity();
+          }
+      }
+
+
 
 
 Finding Memory Issues
 ---------------------
+
+In this section we will demonstrate two
+
 
 There are many tools for identifying memory issues. Here we will use valgrind
 (https://valgrind.org/), a general tool for instrumenting and analysing
@@ -130,8 +202,8 @@ Valgrind has many other tools, besides Memcheck. See https://valgrind.org/ for
 more details
 
 
-Debugging with gdb
-------------------
+Debugging
+---------
 
 The Gnu debugger (gdb), and many other similar programs, allow you to stop your
 program and inspect the state different variables, or even modify them before
