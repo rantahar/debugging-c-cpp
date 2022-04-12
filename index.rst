@@ -47,24 +47,81 @@ Most of this course applies directly to Fortran and other compiled
 languages. Each language has their own quirks and common problems,
 but the same tools can be used to solve them.
 
-That said, in the first section we will talk about special the quirks of
-C and C++, which may or may not apply to other languages.
+That said, The section "Things about C/C++" mostly don't apply to
+other languages.
+
+Introduction
+------------
+
+Debugging
+.........
+
+Debugging is the skill of identifying why a program does something
+unexpected. There is a bug when the user expects something to happen,
+but the program does something different. It could be something very
+clear, like throwing an exception, or it could be a misleading UI or
+weird interaction between parts of the program.
+
+We will mainly concentrate on tools that allow you to find issues and
+inspect the internal state of you program as it run.
+
+Debugging in five steps
+.......................
+
+1. Identify an issue
+
+   * Find a problem or receive a report from a user.
+   * Get a Segmentation Fault.
+   * Find an issue using an analysis tool.
+
+2. Isolate the bug
+
+   * Reproduce the problem
+   * Create a minimal case that causes the problem to occur.
+   * (Turn this into a test case)
+
+3. Find the erroneous logic
+
+   * This can be in a single location, or an interaction between
+     different parts of the code
+
+4. Fix the bug
+
+   * Replace the bad code or redo logic
+
+5. Test
+
+   * Check that the bug is no longer reproduced
+   * Check that **everything** that used to work still works.
+
+We will mostly concentrate on finding the problem in the code. How you
+find an issue or receive a report depends a lot on your project and is
+not language specific.
+
+When you publish your code, make sure to include a way for users to
+communicate back to you. For example, if you are using a public
+service such as Github, Gitlab or Bitbucket enable issues.
+
 
 
 Things about C/C++
 ------------------
 
-Datatypes: Strong and static typing
-...................................
+Datatypes: Static and strong(ish) typing
+........................................
 
-C and C++ are strongly typed. This means you specify the type of each variable
-when it is first created and the type cannot be changed. This protect you from
+C and C++ are statically typed. This means you specify the type of each variable
+when it is first created and the type cannot be changed. This protects you from
 a lot of problems you might run into in other languages.
 
-That said, you can cast a pointer to a different type. Doing this can easily
-cause memory issues and is almost always a bad idea. The main reason you would
-ever want to do this has to do with micromanaging memory for a slight
-performance gain.
+Typing in C and C++ is also (relatively) strong. Types do not get cast into
+other types automatically. But both have implied casting rules. For example,
+assigning to a variable of a different type can work, but results in a cast.
+
+You can also cast a pointer to a different type. Doing this can easily cause
+memory issues and is almost always a bad idea. The main reason you would ever
+want to do this has to do with micromanaging memory for a slight performance
+gain.
 
 Compilers will often assume that the type information that comes with pointers
 is correct. So if something works at optimization level 0 and 1, but you get
