@@ -340,9 +340,4 @@ Defensive Programming Assertions
 - Exceptions in C++
 
 
-Indices and tables
-==================
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
