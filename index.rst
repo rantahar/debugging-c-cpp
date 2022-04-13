@@ -332,12 +332,5 @@ Here are some useful gdb commands:
 
 
 
-Defensive Programming Assertions
---------------------------------
-
-- Assertions
-
-- Exceptions in C++
-
 
 
