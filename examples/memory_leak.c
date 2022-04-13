@@ -9,7 +9,6 @@ int memory_fail(int i){
 
 int main(){
     int i=5;
-    int *x = 0x0;
     i = memory_fail(i);
     return 0;
 }
