@@ -248,6 +248,16 @@ for more details.
 Valgrind
 ........
 
+.. note::
+   Valgrind does not work on Windows directly, but you can use it with a
+   terminal or Linux emulator such as
+   `WSL <https://docs.microsoft.com/en-us/windows/wsl/>`_ or
+   `cygwin <https://www.cygwin.com/>`_.
+
+   Program compiled in these emulators will usually not work on native windows,
+   but you can debug and study the code.
+
+
 Valgrind essentially wraps your program and intercepts calls to kernel
 functions. This means your code will run significantly slower, especially when
 full memory checks are enabled. It's recommended to use a small test case if
@@ -307,6 +317,48 @@ catch this.
 
 We see the problem report after the ``HEAP SUMMARY`` block (40 bytes ...
 definitely lost ...). It confirms the leak is in ``memory_leak.c`` on line 6.
+
+
+drMemory
+........
+
+.. note::
+   `drMemory <https://drmemory.org/index.html>`_ memory debugger
+   that also works on Windows. You will still need to prepare the application.
+   See their `prep application page <https://drmemory.org/page_prep.html>`_ for
+   details.
+
+
+If you use Windows you probably did not prepare the application yet. If you use
+the Visual Studio compiler, you need to add the `/Zi` flag and recompile. In
+Visual Studio Code, go to "Settings" (press `ctrl+,`) and search for "compiler".
+Add the flag to "C_Cpp › Default: Compiler Args".
+
+Running drMemory works similarly to valgrind:
+
+.. code-block:: console
+
+      $ drmemory -- memory_leak
+
+      ~~Dr.M~~ Dr. Memory version 2.5.0
+      ~~Dr.M~~
+      ~~Dr.M~~ Error #1: LEAK 40 direct bytes 0x00007f06c6ad8ff0-0x00007f06c6ad9018 + 0 indirect bytes
+      ~~Dr.M~~ # 0 replace_malloc               [/home/runner/work/drmemory/drmemory/common/alloc_replace.c:2580]
+      ~~Dr.M~~ # 1 memory_fail                  [/u/24/rantahj1/unix/src/c-debugging/examples/memory_leak.c:6]
+      ~~Dr.M~~ # 2 main                         [/u/24/rantahj1/unix/src/c-debugging/examples/memory_leak.c:12]
+      ~~Dr.M~~
+      ~~Dr.M~~ ERRORS FOUND:
+      ~~Dr.M~~       0 unique,     0 total unaddressable access(es)
+      ~~Dr.M~~       0 unique,     0 total uninitialized access(es)
+      ~~Dr.M~~       0 unique,     0 total invalid heap argument(s)
+      ~~Dr.M~~       0 unique,     0 total warning(s)
+      ~~Dr.M~~       1 unique,     1 total,     40 byte(s) of leak(s)
+      ~~Dr.M~~       0 unique,     0 total,      0 byte(s) of possible leak(s)
+      ~~Dr.M~~ ERRORS IGNORED:
+      ~~Dr.M~~      13 unique,    16 total,   6682 byte(s) of still-reachable allocation(s)
+      ~~Dr.M~~          (re-run with "-show_reachable" for details)
+      ~~Dr.M~~ Details: /u/24/rantahj1/unix/bin/DrMemory-Linux-2.5.0/drmemory/logs/DrMemory-memory_leak.18987.000/results.txt
+
 
 
 
