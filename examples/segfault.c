@@ -1,13 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void * get_pointer(){
+void * allocate_one_integer(){
+    /* Allocates space for an integer */
     void *pointer = 0x0;
+    malloc(sizeof(int));
     return pointer;
 }
 
 int main(){
-    int * pointer = get_pointer();
-    int number = *pointer;
+    int * pointer = allocate_one_integer();
+    *pointer = 4;
+    printf("the number is %d\n", *pointer);
+    
+    free(pointer);
     return 0;
 }

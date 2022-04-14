@@ -341,7 +341,7 @@ drMemory
 If you use Windows you probably did not prepare the application yet. If you use
 the Visual Studio compiler, you need to add the `/Zi` flag and recompile. In
 Visual Studio Code, go to "Settings" (press `ctrl+,`) and search for "compiler".
-Add the flag to "C_Cpp â€º Default: Compiler Args".
+Add the flag to "C_Cpp › Default: Compiler Args".
 
 Running drMemory works similarly to valgrind:
 
@@ -463,5 +463,34 @@ and the values of variables are displayed on the left *explorer* view.
 These elements are highlighted in the image below.
 
 .. image:: /_static/vs_code_debug.png
+
+There are many other IDEs for Windows an other operating systems. While the user
+interface can be different, the concepts are the same. You set a breakpoint, run
+the program and inspect (and possible change) the values of variables live as
+the program runs.
+
+
+Exercises
+---------
+
+Exercise 1: A segfault
+..........
+
+Compile and run `examples/segfault.c`. It should cause a segfault.
+
+1. What tool would you use to find the problem?
+2. Identify the issue. What should the program actually do?
+3. Fix the program and test it.
+
+
+Exercise 2: The double pendulum
+...............................
+
+1. Clone the double pendulum program
+
+.. code-block:: console
+
+      $ git clone ...
+
 
 
