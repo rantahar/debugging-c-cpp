@@ -142,13 +142,18 @@ pointer types that are all safer than the basic C pointer.
 Memory issues are probably the most common problems you will face in C, and are
 common in C++ as well. Memory issues include
 
-  - Segmentation faults: You program tries to read or write to the wrong place
-    in memory. These are generally easy to debug, since they happen on a
+  - **Segmentation faults**: You program tries to read or write to the wrong
+    place in memory. These are generally easy to debug, since they happen on a
     specific line in the code.
-  - Memory leaks: The program reserves memory and does not release it. If it
+  - **Memory leaks**: The program reserves memory and does not release it. If it
     runs for a long time, this reduces system performance and may cause a crash.
-  - Misreads and -writes: The program uses the same memory for two different
+  - **Misreads and -writes**: The program uses the same memory for two different
     things. Data gets overwritten incorrectly.
+  - **Uninitialized reads**: Program reads memory before writing to it. This
+    results in some random content for the variable.
+
+These can all be debugged using `Valgrind` or `drMemory`, which we will show in
+the next section.
 
 C++ pointer types:
  - std::unique_ptr: There is ever only one pointer that points to this memory.
