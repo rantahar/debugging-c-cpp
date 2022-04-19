@@ -341,7 +341,7 @@ drMemory
 If you use Windows you probably did not prepare the application yet. If you use
 the Visual Studio compiler, you need to add the `/Zi` flag and recompile. In
 Visual Studio Code, go to "Settings" (press `ctrl+,`) and search for "compiler".
-Add the flag to "C_Cpp › Default: Compiler Args".
+Add the flag to "C_Cpp ï¿½ Default: Compiler Args".
 
 Running drMemory works similarly to valgrind:
 
@@ -486,11 +486,48 @@ Compile and run `examples/segfault.c`. It should cause a segfault.
 Exercise 2: The double pendulum
 ...............................
 
-1. Clone the double pendulum program
+The examples folder contains `double_pendulum.c`, which runs a simulation
+of a double pendulum. It has some problems, though.
+
+1.  Compilation errors
+
+Try compiling the program with
 
 .. code-block:: console
 
-      $ git clone ...
+    $ cd examples
+    $ gcc -g -O2 double_pendulum.c -lm -o double_pendulum
+
+The code does not compile. Can you find the problems following hints from
+the compiler or your IDE?
+
+2. Segfault
+
+Once you manage to compile it, run the program with
+
+.. code-block:: console
+
+    $ ./double_pendulum
+
+Now there's a segmentation fault! Use a debugger
+to find where the segfault happens. Can you fix it?
+
+Looks like it works! But does it, actually?
+
+3. You have received complaints from users. When the program runs for a long
+   time, it takes a lot of memory. Maybe there is a memory leak.
+
+   Hint: You can separate valgrind output (and other errors) to a file using
+
+   .. code-block:: console
+
+       $ valgrind --leak-check=full double_pendulum 2> valgrind_errors
+
+4. Can you find another memory issue?
+
+   Hint: Use `valgrind tool=memcheck` and let the simulation run for a while.
+
+   Hint2: What happens when a pendulum does not fit on the screen?
 
 
 

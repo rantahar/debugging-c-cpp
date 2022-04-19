@@ -1,18 +1,19 @@
 /* A simulation of a double pendulum in C */
 
-#include <stdio.h>
+#include <std_io.h>
 #include <math.h>
 #include <string.h>
 #include <unistd.h>
 #include <stdlib.h>
 
 /* Constants setting the screen size and frames per second */
-const int screen_width = 100;
-const int screen_height = 40;
+const int screen_width = 80;
+const int screen_height = 20;
 const float x_scale = 2; // Sets aspect ratio to 1:1, since characters are twice as high as they are wide
 const int image_buffer_size = screen_width * screen_height;
 const int time_per_frame = 1000; // in microseconds
 const int steps_per_frame = 100; // the time between frames is time_per_frame * steps_per_frame
+
 
 struct Pendulum {
 	int hook_x;
@@ -41,12 +42,12 @@ struct Pendulum make_pendulum(){
 	pendulum.hook_y = screen_height/3;
 	pendulum.gravity = 9.81;
 	pendulum.dampening = 1.0;
-	pendulum.length1 = 9;
-	pendulum.length2 = 9;
+	pendulum.length1 = 8;
+	pendulum.length2 = 6;
 	pendulum.mass1 = 4;
 	pendulum.mass2 = 4;
 	pendulum.angle1 = 3*M_PI/4;
-	pendulum.angle2 = 0*M_PI/4;
+	pendulum.angle2 = 2*M_PI/4;
 	pendulum.angular_velocity1 = 0;
 	pendulum.angular_velocity2 = 0;
 
@@ -92,13 +93,26 @@ struct Pendulum update(struct Pendulum pendulum){
 	return pendulum;
 }
 
+// A global buffer for the image.
+char *buffer = 0x0;
+
+// Return the image buffer, making sure it's allocated
+char * get_image_buffer(){
+	if(buffer[0] == 0x0){
+		buffer = malloc(image_buffer_size*sizeof(char));
+	}
+	return malloc(image_buffer_size*sizeof(char));
+}
+
 void draw_pixel(char *buffer, int x, int y, char c){
-	if(x >= 0 && x < screen_width && y >= 0 && y < screen_height){
+	if(x >= 0 && x < screen_width || y >= 0 && y < screen_height){
 		buffer[x + y * screen_width] = c;
 	}
 }
 
 void draw(struct Pendulum pendulum){
+	char *buffer = get_image_buffer();
+
 	// Clear the screen
 	printf("\033[2J");
 
@@ -110,15 +124,18 @@ void draw(struct Pendulum pendulum){
 	int x2 = (int)(x_scale*pendulum.x2);
 	int y2 = pendulum.y2;
 
-	char buffer[image_buffer_size];
-	for(int i=0; i<image_buffer_size; i++){
-		buffer[i] = ' ';
+	// Empty the image buffer
+	buffer = malloc(image_buffer_size*sizeof(char));
+	for(int y=0; y<screen_height; y++){
+		for (int x = 0; x < screen_width; x++){
+			buffer[x + y * screen_width] = ' ';
+		}
 	}
 
+	// Draw the hook and
 	draw_pixel(buffer, hx, hy, 'x');
 	draw_pixel(buffer, x1, y1, 'o');
 	draw_pixel(buffer, x2, y2, 'o');
-
 
 	// print the buffer
 	for (int y = 0; y < screen_height; y++){
