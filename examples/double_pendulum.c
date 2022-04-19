@@ -93,6 +93,7 @@ struct Pendulum update(struct Pendulum pendulum){
 	return pendulum;
 }
 
+
 // A global buffer for the image.
 char *buffer = 0x0;
 
