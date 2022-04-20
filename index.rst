@@ -30,7 +30,7 @@ Installation
  - Install a memory checker
 
     - `Valgrind <https://valgrind.org/>`_ on Linux or Mac.
-    - `DrMemory <https://drmemory.org/page_install.html>`_ on Windows.
+    - `DrMemory <https://drmemory.org/page_install.html>`__ on Windows.
       You can also try this on other systems.
 
 Learning Outcomes
@@ -246,7 +246,7 @@ In this section we will demonstrate two useful tools for studying your code,
 **Valgrind** and **DrMemory**. We will mainly use them to find memory problems,
 but they are actually more versatile than that. Checkout
 `Valgrind <https://valgrind.org/>`_ and
-`DrMemory <https://drmemory.org/page_install.html>`_
+`DrMemory <https://drmemory.org/page_install.html>`__
 for more details.
 
 Valgrind
@@ -474,7 +474,7 @@ Exercises
 ---------
 
 Exercise 1: A segfault
-..........
+......................
 
 Compile and run `examples/segfault.c`. It should cause a segfault.
 
@@ -489,7 +489,7 @@ Exercise 2: The double pendulum
 The examples folder contains `double_pendulum.c`, which runs a simulation
 of a double pendulum. It has some problems, though.
 
-1.  Compilation errors
+1. **Compilation errors**
 
 Try compiling the program with
 
@@ -501,7 +501,7 @@ Try compiling the program with
 The code does not compile. Can you find the problems following hints from
 the compiler or your IDE?
 
-2. Segfault
+2. **Segfault**
 
 Once you manage to compile it, run the program with
 
@@ -514,20 +514,28 @@ to find where the segfault happens. Can you fix it?
 
 Looks like it works! But does it, actually?
 
-3. You have received complaints from users. When the program runs for a long
-   time, it takes a lot of memory. Maybe there is a memory leak.
+3. **Memory leak**
 
-   Hint: You can separate valgrind output (and other errors) to a file using
+You have received complaints from users. When the program runs for a long
+time, it takes a lot of memory. Maybe there is a memory leak.
+
+.. Hint::
+   You can separate valgrind output (and other errors) to a file using
 
    .. code-block:: console
 
-       $ valgrind --leak-check=full double_pendulum 2> valgrind_errors
+      $ valgrind --leak-check=full double_pendulum 2> valgrind_errors
 
-4. Can you find another memory issue?
 
-   Hint: Use `valgrind tool=memcheck` and let the simulation run for a while.
+4. **More?**
 
-   Hint2: What happens when a pendulum does not fit on the screen?
+Can you find another memory issue?
+
+.. Hint::
+   Use `valgrind tool=memcheck` and let the simulation run for a while.
+
+.. Hint::
+   What happens when a pendulum does not fit on the screen?
 
 
 
