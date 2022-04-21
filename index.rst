@@ -47,8 +47,7 @@ The tools used on this course are also used to debug Fortran and other compiled
 languages. Each language has their own quirks and common problems, so the first
 sections do not apply.
 
-That said, The section "Things about C/C++" mostly don't apply to
-other languages.
+
 
 Introduction
 ------------
