@@ -706,7 +706,7 @@ results. That's nice.
 
 - How would you go about finding the cause of the exception?
 - Use a debugger to inspect the code and look at the values passed to the
-function. What is the problem?
+  function. What is the problem?
 - How would you fix the issue?
 
 Exercise 2: The double pendulum (C)
