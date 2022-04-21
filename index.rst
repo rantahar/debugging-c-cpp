@@ -67,28 +67,28 @@ inspect the internal state of you program as it run.
 Debugging in five steps
 .......................
 
-1. Identify an issue
+1. **Identify an issue**
 
    * Find a problem or receive a report from a user.
    * Get a Segmentation Fault.
    * Find an issue using an analysis tool.
 
-2. Isolate the bug
+2. **Isolate the bug**
 
    * Reproduce the problem
    * Create a minimal case that causes the problem to occur.
    * (Turn this into a test case)
 
-3. Find the erroneous logic
+3. **Find the erroneous logic**
 
    * This can be in a single location, or an interaction between
      different parts of the code
 
-4. Fix the bug
+4. **Fix the bug**
 
    * Replace the bad code or redo logic
 
-5. Test
+5. **Test**
 
    * Check that the bug is no longer reproduced
    * Check that **everything** that used to work still works.
@@ -109,6 +109,11 @@ Things about C/C++
 Datatypes: Static and strong(ish) typing
 ........................................
 
+ - The type of a variable does not change
+ - But you can assign to a variable of a different type and the conversion is
+   often implicit.
+ - Pointers can be assigned with abandon (but should not be.)
+
 C and C++ are statically typed. This means you specify the type of each variable
 when it is first created and the type cannot be changed. This protects you from
 a lot of problems you might run into in other languages.
@@ -126,8 +131,14 @@ Compilers will often assume that the type information that comes with pointers
 is correct. So if something works at optimization level 0 and 1, but you get
 a segfault on level 2 or 3, maybe you are casting a pointer?
 
+
 Pointers
 ........
+
+ - Commonly cited as the hardest part in C (and sometimes C++), but they are
+   necessary for most programs.
+ - Common issues.
+ - C++ has useful pointer types.
 
 Talking of pointers, they are commonly cited as the hardest thing to understand
 in C and C++. The main problem with pointers is that they allow you to do bad
@@ -166,7 +177,7 @@ C++ pointer types:
    releases it when the pointer goes out of scope.
 
 Note: Don't mix smart pointers with arrays. When the smart pointer goes out of
-scope ...
+scope, it calls delete and the contents of the array can get deallocated.
 
 
 Macros
@@ -192,12 +203,16 @@ Sometimes things that should not work actually do:
 .. code-block:: C
 
     c = 0;
-    while(c<10);
-    {
+    while(c<10); {
       c++;
     }
 
 Note the semicolon after `while`. This is an infinite loop.
+
+C and C++ have an interesting modular structure, where most things are
+statements that return a value. The while loop below can be executed without any
+brackets to the right. Similarly, the brackets can be executed independently of
+anything to their left (they group statements into a single statement).
 
 
 Virtual functions and inheritance
@@ -231,6 +246,16 @@ The following may not call the destructor for MyClass:
     MyBase *b = a
     delete b;
 
+- Polymorphism only works for references. If you pass by value or make a copy,
+  in the base class, information of derived classes is lost.
+
+.. code-block:: C++
+
+    MyClass a;
+    Baseclass b = a;       // if you make a copy
+    b.my_class_function(); // this does not work
+
+
 
 Returning by Reference or Pointer
 .................................
@@ -249,7 +274,7 @@ deallocated immediately on return:
       return &result;
     }
 
- - A bit more subtle example in C++:
+- A bit more subtle example in C++:
 
 .. code-block:: C
 
@@ -272,7 +297,7 @@ deallocated immediately on return:
       std::cout << a << std::endl; // 0 or some random value
     }
 
- - Note that most compilers optimize the copy away in any case.
+- Note that most compilers optimize the copy away in any case.
 
 
 Exception in a Destructor
@@ -295,7 +320,7 @@ can go wrong:
     };
 
 This is a problem if the exception is caught. The `free` function was never
-called;
+called.
 
 
 Using a freed pointer or old reference
@@ -307,29 +332,11 @@ or to move to pointer for any other reason, your pointer will no longer work.
 
 .. code-block:: C++
 
-    class MyClass {
-      double * a;
-      MyClass(){
-        a = malloc(100*sizeof(int));
-      }
-      ~MyClass(){
-        do_something(a); // What if this throws an exception?
-        free(a);
-      }
-    };
+    std::vector<float> v = {1,2,3,4};
+    float * pointer = v.data();
+    a.push_back(4);
+    std::cout << pointer[2] << std::endl; // this might not work
 
-
-Other Inheritance Issues
-........................
-
-- Polymorphism only works for references. If you pass by value or make a copy,
-  in the base class, information of derived classes is lost.
-
-.. code-block:: C++
-
-    MyClass a;
-    Baseclass b = a;       // if you make a copy
-    b.my_class_function(); // this does not work
 
 
 Errors and Exceptions
@@ -370,16 +377,16 @@ message first.
 
 .. code-block:: C
 
-    error_code = my_function();
-    if(error_code){
-      print("Error: %s\n", error_messages[error_code]);
-      exit(1);
-    }
+   int error_code = my_function();
+   if(error_code){
+     printf("Error: %s\n", error_messages[error_code]);
+     exit(1);
+   }
 
 
- - Always check for possible errors and print the error message.
- - Another convention: Many Unix system calls return `-1` if there was an
-   error and `errno` is set to an error code.
+- Always check for possible errors and print the error message.
+- Another convention: Many Unix system calls return `-1` if there was an
+  error and `errno` is set to an error code.
 
 So read the manual for the library you are using.
 
@@ -394,11 +401,11 @@ Throwing an exception looks like this:
 
 .. code-block:: C++
 
-    double divide(x, y){
+    double divide(double x, double y){
         if(y == 0){
-           throw "Division by 0 exception"
+           throw std::runtime_error("Division by 0");
         }
-        return x/y
+        return x/y;
     }
 
 By default this will stop the program and print the message. The other option
@@ -408,17 +415,17 @@ is to handle it in code using the `try` syntax:
 
       double try_to_divide(x, y){
           try {
-            result = divide(x,y);
+            double result = divide(x,y);
             return result;
 
-          } catch (const char* message){
+          } catch (std::runtime_error &){
             // Return infinity if dividing by zero
             return x * std::numeric_limits<double>::infinity();
           }
       }
 
-You can create a custom exception type by extending std::exception, and catch
-only that:
+The above will catch everything that inherits `std::runtime_error`. You can
+create a custom exception type by extending `std::exception` and catch only that.
 
 
 
@@ -454,9 +461,9 @@ First, you should compile your code with
 
 .. code-block:: console
 
-      $ CC -g code.c -o executable
+      $ gcc -g code.c -o executable
 
-where CC is your c compiler. The `-g` flag adds source files and line numbers
+The `-g` flag adds source files and line numbers
 in the compiled executable, allowing valgrind to report where it finds problems.
 
 Next, run Valgrind with
@@ -467,7 +474,9 @@ Next, run Valgrind with
 
 This should point out any memory issues in you code.
 
-Take a look at ``examples/memory_leak.c``. The function named ``memory_fail``
+Take a look at
+`memory_leak.c <https://raw.githubusercontent.com/rantahar/debugging-c-cpp/main/examples/memory_leak.c>`_.
+The function named ``memory_fail``
 will allocate some memory and then lose the pointer. Let's see if valgrind will
 catch this.
 
@@ -659,17 +668,39 @@ Exercises
 Exercise 1: A segfault
 ......................
 
-Compile and run `examples/segfault.c`. It should cause a segfault.
+Compile and run either
+`segfault.c <https://raw.githubusercontent.com/rantahar/debugging-c-cpp/main/examples/segfault.c>`_
+or
+`segfault.cpp <https://raw.githubusercontent.com/rantahar/debugging-c-cpp/main/examples/segfault.cpp>`_.
+It should cause a segfault.
 
 1. What tool would you use to find the problem?
 2. Identify the issue. What should the program actually do?
 3. Fix the program and test it.
 
 
-Exercise 2: The double pendulum
-...............................
+Exercise 2: Divide by Zero (C++)
+................................
 
-The examples folder contains `double_pendulum.c`, which runs a simulation
+Try compiling and running
+`divide_by_zero.cpp <https://raw.githubusercontent.com/rantahar/debugging-c-cpp/main/examples/divide_by_zero.cpp>`_.
+This one throws an exception rather than just running along with incorrect
+results. That's nice.
+
+- How would you go about finding the cause of the exception?
+- Use a debugger to inspect the code and look at the values passed to the
+function. What is the problem?
+- How would you fix the issue?
+
+Exercise 2: The double pendulum (C)
+...................................
+
+This exercise is longer than the others and the code is more complex. If you
+brought your own code to debug, I suggest you look at that instead.
+
+The code is at
+`double_pendulum.c <https://raw.githubusercontent.com/rantahar/debugging-c-cpp/main/examples/double_pendulum.c>`_
+It runs a simulation
 of a double pendulum. It has some problems, though.
 
 1. **Compilation errors**
