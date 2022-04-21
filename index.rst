@@ -253,6 +253,7 @@ deallocated immediately on return:
  - A bit more subtle example in C++:
 
 .. code-block:: C
+
     class MyClass {
       double a;
       public:
@@ -282,6 +283,7 @@ We will talk more about exceptions later, but here is an example of how things
 can go wrong:
 
 .. code-block:: C++
+
     class MyClass {
       double * a;
       MyClass(){
@@ -305,6 +307,7 @@ memory handled by a library. If the library decides to re-allocate the memory,
 or to move to pointer for any other reason, your pointer will no longer work.
 
 .. code-block:: C++
+
     class MyClass {
       double * a;
       MyClass(){
@@ -324,6 +327,7 @@ Other Inheritance Issues
   in the base class, information of derived classes is lost.
 
 .. code-block:: C++
+
     MyClass a;
     Baseclass b = a;       // if you make a copy
     b.my_class_function(); // this does not work
