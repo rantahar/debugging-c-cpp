@@ -1,25 +1,25 @@
 #include<iostream>
-#include<array>
+#include<vector>
 
 
-template<typename T, size_t N>
-float average(std::array<T, N> &arr, int n) {
+template<typename T>
+float average(std::vector<T> &vector, int n) {
   T sum = 0;
-  for(int i=n; i<N; i++){
-    sum += arr[i];
+  for(int i=n; i<vector.size(); i++){
+    sum += vector[i];
   }
-  int len = N-n;
+  int len = vector.size()-n;
   if(len == 0) {
-    throw "Divide by zero in the average-function";
+    throw std::runtime_error("Divide by zero in the average-function");
   }
   return sum/(float)len;
 }
 
 int main(){
     const int N = 5;
-    std::array<int, N> array = {1, 2, 3, 4, 5};
+    std::vector<float> vector = {1, 2, 3, 4, 5};
     for(int i=0; i<=N; i++){
-        average(array, i);
+        average(vector, i);
     }
     return 0;
 }
