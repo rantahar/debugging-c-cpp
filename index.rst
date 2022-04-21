@@ -166,6 +166,168 @@ C++ pointer types:
  - std::auto_ptr (deprecated since C++11): Automatically allocates memory and
    releases it when the pointer goes out of scope.
 
+Note: Don't mix smart pointers with arrays. When the smart pointer goes out of
+scope ...
+
+
+Macros
+......
+
+- Macros can contain arbitrary code.
+- It's easy to create a syntax error. The macro content is directly pasted in.
+
+To see what a macro call actually does, use
+
+.. code-block:: console
+
+    $ gcc -E code.c
+
+The output will include all the header files, so it might be quite long.
+
+
+Misplaced semicolon
+...................
+
+Sometimes things that should not work actually do:
+
+.. code-block:: C
+
+    c = 0;
+    while(c<10);
+    {
+      c++;
+    }
+
+Note the semicolon after `while`. This is an infinite loop.
+
+
+Virtual functions and inheritance
+.................................
+
+ - Confusing base class functions and derived class functions
+
+Virtual function can be binded at runtime based on the reference type to an
+object. They are used to achieve runtime polymorphism. This means you need to
+track what type the object reference is to figure out what function gets called.
+
+The best way to avoid problems is to give function descriptive names to make it
+clear what they are doing applying to. The function `get_name` of a derived
+class should not be different from the function `get_name` of the base class.
+
+ - Memory leak due to missing virtual destructor
+
+If you handle memory dynamically, you should usually add a virtual destructor.
+A standard destructor does not get called when a derived class object gets
+destroyed.
+
+The following may not call the destructor for MyClass:
+
+.. code-block:: C++
+
+    class MyClass : public MyBase {
+      ~MyClass(){}
+    }
+
+    Myclass a = new MyClass();
+    MyBase *b = a
+    delete b;
+
+
+Returning by Reference or Pointer
+.................................
+
+Using pointers (C) and references (C++) to return values removes a copy
+operation. This can affect performance, especially in C++ where a copy can call
+a constructor.
+
+The problem is when you return something from the function scope, and it gets
+deallocated immediately on return:
+
+.. code-block:: C
+
+    double * divide(x, y){
+      double result = x/y;
+      return &result;
+    }
+
+ - A bit more subtle example in C++:
+
+.. code-block:: C
+    class MyClass {
+      double a;
+      public:
+      MyClass(){
+        a=1;
+      }
+      double &get_a(){
+        return a;
+      }
+    };
+
+    int main(){
+      MyClass *myClass = new MyClass();
+      double &a = myClass->get_a();
+      std::cout << a << std::endl; // 1
+      delete myClass;
+      std::cout << a << std::endl; // 0 or some random value
+    }
+
+ - Note that most compilers optimize the copy away in any case.
+
+
+Exception in a Destructor
+.........................
+
+We will talk more about exceptions later, but here is an example of how things
+can go wrong:
+
+.. code-block:: C++
+    class MyClass {
+      double * a;
+      MyClass(){
+        a = malloc(100*sizeof(int));
+      }
+      ~MyClass(){
+        do_something(a); // What if this throws an exception?
+        free(a);
+      }
+    };
+
+This is a problem if the exception is caught. The `free` function was never
+called;
+
+
+Using a freed pointer or old reference
+................................
+
+Very similar to above. This happens when you fetch a pointer or a reference to
+memory handled by a library. If the library decides to re-allocate the memory,
+or to move to pointer for any other reason, your pointer will no longer work.
+
+.. code-block:: C++
+    class MyClass {
+      double * a;
+      MyClass(){
+        a = malloc(100*sizeof(int));
+      }
+      ~MyClass(){
+        do_something(a); // What if this throws an exception?
+        free(a);
+      }
+    };
+
+
+Other Inheritance Issues
+........................
+
+- Polymorphism only works for references. If you pass by value or make a copy,
+  in the base class, information of derived classes is lost.
+
+.. code-block:: C++
+    MyClass a;
+    Baseclass b = a;       // if you make a copy
+    b.my_class_function(); // this does not work
+
 
 Errors and Exceptions
 ---------------------
@@ -203,6 +365,21 @@ In worst cases, when you don't think the program can recover, you can always
 call `exit(1)` (or any other error code besides 1). You should print and error
 message first.
 
+.. code-block:: C
+
+    error_code = my_function();
+    if(error_code){
+      print("Error: %s\n", error_messages[error_code]);
+      exit(1)
+    }
+
+
+ - Always check for possible errors and print the error message.
+ - Another convention: Many Unix system calls return `-1` if there was an
+   error and `errno` is set to an error code.
+
+So read the manual for the library you are using.
+
 
 C++ Exceptions
 ..............
@@ -236,6 +413,9 @@ is to handle it in code using the `try` syntax:
             return x * std::numeric_limits<double>::infinity();
           }
       }
+
+You can create a custom exception type by extending std::exception, and catch
+only that:
 
 
 
@@ -341,9 +521,9 @@ drMemory
 If you use Windows you probably did not prepare the application yet. If you use
 the Visual Studio compiler, you need to add the `/Zi` flag and recompile. In
 Visual Studio Code, go to "Settings" (press `ctrl+,`) and search for "compiler".
-Add the flag to "C_Cpp � Default: Compiler Args".
+Add the flag to "C_Cpp Default: Compiler Args".
 
-Running drMemory works similarly to valgrind:
+Running drMemory works similarly to Valgrind:
 
 .. code-block:: console
 

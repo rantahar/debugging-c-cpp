@@ -12,7 +12,7 @@ int main(){
     int * pointer = allocate_one_integer();
     *pointer = 4;
     printf("the number is %d\n", *pointer);
-    
+
     free(pointer);
     return 0;
 }
