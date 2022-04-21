@@ -662,6 +662,23 @@ the program and inspect (and possible change) the values of variables live as
 the program runs.
 
 
+.. Note::
+
+  **Version Control**
+
+  Version control programs, such as `git`, are probably the best debugging tool
+  there is. You can go back in versions of your program and find where a given
+  but was introduced. Knowing what the bug is and looking at the changes is
+  usually enough to figure out the problem.
+
+  We will not go into this, since this is mostly about version control systems
+  and not about C or C++ specifically. Instead, take a look at the
+  `CodeRefinery lesson on inspecting history <https://coderefinery.github.io/git-intro/archaeology/>`_.
+
+  And check the rest of CodeRefinery while you are there.
+
+
+
 Exercises
 ---------
 
