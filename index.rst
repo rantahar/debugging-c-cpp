@@ -43,9 +43,9 @@ After this course you will
  - Be able to use a debugger (after finding references online).
  - Be able to find memory leaks and other memory issues.
 
-Most of this course applies directly to Fortran and other compiled
-languages. Each language has their own quirks and common problems,
-but the same tools can be used to solve them.
+The tools used on this course are also used to debug Fortran and other compiled
+languages. Each language has their own quirks and common problems, so the first
+sections do not apply.
 
 That said, The section "Things about C/C++" mostly don't apply to
 other languages.
@@ -300,7 +300,7 @@ called;
 
 
 Using a freed pointer or old reference
-................................
+......................................
 
 Very similar to above. This happens when you fetch a pointer or a reference to
 memory handled by a library. If the library decides to re-allocate the memory,
@@ -374,7 +374,7 @@ message first.
     error_code = my_function();
     if(error_code){
       print("Error: %s\n", error_messages[error_code]);
-      exit(1)
+      exit(1);
     }
 
 
