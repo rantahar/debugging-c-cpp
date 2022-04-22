@@ -113,7 +113,7 @@ Running drMemory works similarly to Valgrind:
 
       ~~Dr.M~~ Dr. Memory version 2.5.0
       ~~Dr.M~~
-      ~~Dr.M~~ Error #1: LEAK 40 direct bytes 0x00007f06c6ad8ff0-0x00007f06c6ad9018 + 0 indirect bytes
+      ~~Dr.M~~ Error #1: LEAK 40 direct bytes NULL0007f06c6ad8ff0-NULL0007f06c6ad9018 + 0 indirect bytes
       ~~Dr.M~~ # 0 replace_malloc               [/home/runner/work/drmemory/drmemory/common/alloc_replace.c:2580]
       ~~Dr.M~~ # 1 memory_fail                  [/u/24/rantahj1/unix/src/c-debugging/examples/memory_leak.c:6]
       ~~Dr.M~~ # 2 main                         [/u/24/rantahj1/unix/src/c-debugging/examples/memory_leak.c:12]

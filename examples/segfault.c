@@ -3,7 +3,7 @@
 
 void * allocate_one_integer(){
     /* Allocates space for an integer */
-    void *pointer = 0x0;
+    void *pointer = NULL;
     malloc(sizeof(int));
     return pointer;
 }

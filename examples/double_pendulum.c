@@ -95,11 +95,11 @@ struct Pendulum update(struct Pendulum pendulum){
 
 
 // A global buffer for the image.
-char *buffer = 0x0;
+char *buffer = NULL;
 
 // Return the image buffer, making sure it's allocated
 char * get_image_buffer(){
-	if(buffer[0] == 0x0){
+	if(buffer[0] == NULL){
 		buffer = malloc(image_buffer_size*sizeof(char));
 	}
 	return malloc(image_buffer_size*sizeof(char));
