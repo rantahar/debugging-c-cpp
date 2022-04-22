@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Things about C/C++ &mdash; Debugging C  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/mystnb.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sphinx_lesson.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sphinx_rtd_theme_ext_color_contrast.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/minipres.js"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="Errors and Exceptions" href="../errors_and_exceptions/" />
+    <link rel="prev" title="Introduction" href="../introduction/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../" class="icon icon-home"> Debugging C
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction/">Introduction</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Things about C/C++</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#datatypes-static-and-strong-ish-typing">Datatypes: Static and strong(ish) typing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pointers">Pointers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#macros">Macros</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#misplaced-semicolon">Misplaced semicolon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#virtual-functions-and-inheritance">Virtual functions and inheritance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#returning-by-reference-or-pointer">Returning by Reference or Pointer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#exception-in-a-destructor">Exception in a Destructor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#using-a-freed-pointer-or-old-reference">Using a freed pointer or old reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../errors_and_exceptions/">Errors and Exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../memory/">Finding Memory Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../debugging/">Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../exercises/">Exercises</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">Debugging C</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home"></a> &raquo;</li>
+      <li>Things about C/C++</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/c_cpp_topics.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="things-about-c-c">
+<h1>Things about C/C++<a class="headerlink" href="#things-about-c-c" title="Permalink to this headline"></a></h1>
+<section id="datatypes-static-and-strong-ish-typing">
+<h2>Datatypes: Static and strong(ish) typing<a class="headerlink" href="#datatypes-static-and-strong-ish-typing" title="Permalink to this headline"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>The type of a variable does not change</p></li>
+<li><p>But you can assign to a variable of a different type and the conversion is
+often implicit.</p></li>
+<li><p>Pointers can be assigned with abandon (but should not be.)</p></li>
+</ul>
+</div></blockquote>
+<p>C and C++ are statically typed. This means you specify the type of each variable
+when it is first created and the type cannot be changed. This protects you from
+a lot of problems you might run into in other languages.</p>
+<p>Typing in C and C++ is also (relatively) strong. Types do not get cast into
+other types automatically. But both have implied casting rules. For example,
+assigning to a variable of a different type can work, but results in a cast.</p>
+<p>You can also cast a pointer to a different type. Doing this can easily cause
+memory issues and is almost always a bad idea. The main reason you would ever
+want to do this has to do with micromanaging memory for a slight performance
+gain.</p>
+<p>Compilers will often assume that the type information that comes with pointers
+is correct. So if something works at optimization level 0 and 1, but you get
+a segfault on level 2 or 3, maybe you are casting a pointer?</p>
+</section>
+<section id="pointers">
+<h2>Pointers<a class="headerlink" href="#pointers" title="Permalink to this headline"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>Commonly cited as the hardest part in C (and sometimes C++), but they are
+necessary for most programs.</p></li>
+<li><p>Common issues.</p></li>
+<li><p>C++ has useful pointer types.</p></li>
+</ul>
+</div></blockquote>
+<p>Talking of pointers, they are commonly cited as the hardest thing to understand
+in C and C++. The main problem with pointers is that they allow you to do bad
+things by mistake. In fact, you often have to actively do something (free
+memory) to avoid doing bad things.</p>
+<p>At its core, a pointer is a variable that contains an address in memory. In C,
+this is really all it is. In modern C++, you have a choice between a few
+pointer types that are all safer than the basic C pointer.</p>
+<p>Memory issues are probably the most common problems you will face in C, and are
+common in C++ as well. Memory issues include</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>Segmentation faults</strong>: You program tries to read or write to the wrong
+place in memory. These are generally easy to debug, since they happen on a
+specific line in the code.</p></li>
+<li><p><strong>Memory leaks</strong>: The program reserves memory and does not release it. If it
+runs for a long time, this reduces system performance and may cause a crash.</p></li>
+<li><p><strong>Misreads and -writes</strong>: The program uses the same memory for two different
+things. Data gets overwritten incorrectly.</p></li>
+<li><p><strong>Uninitialized reads</strong>: Program reads memory before writing to it. This
+results in some random content for the variable.</p></li>
+</ul>
+</div></blockquote>
+<p>These can all be debugged using <cite>Valgrind</cite> or <cite>drMemory</cite>, which we will show in
+the next section.</p>
+<dl class="simple">
+<dt>C++ pointer types:</dt><dd><ul class="simple">
+<li><p>std::unique_ptr: There is ever only one pointer that points to this memory.
+The memory is automatically freed, so that memory does not leak.</p></li>
+<li><p>std::shared_ptr: A pointer that tracks references to the memory it points to.
+When there are no more references, the memory is freed.</p></li>
+<li><p>std::weak_ptr: A reference to a std::shared_ptr that is not counted. This is
+sometimes necessary to avoid circular dependencies, but should be avoided if
+not otherwise.</p></li>
+<li><p>std::auto_ptr (deprecated since C++11): Automatically allocates memory and
+releases it when the pointer goes out of scope.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Note: Don’t mix smart pointers with arrays. When the smart pointer goes out of
+scope, it calls delete and the contents of the array can get deallocated.</p>
+</section>
+<section id="macros">
+<h2>Macros<a class="headerlink" href="#macros" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p>Macros can contain arbitrary code.</p></li>
+<li><p>It’s easy to create a syntax error. The macro content is directly pasted in.</p></li>
+</ul>
+<p>To see what a macro call actually does, use</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>gcc -E code.c
+</pre></div>
+</div>
+<p>The output will include all the header files, so it might be quite long.</p>
+</section>
+<section id="misplaced-semicolon">
+<h2>Misplaced semicolon<a class="headerlink" href="#misplaced-semicolon" title="Permalink to this headline"></a></h2>
+<p>Sometimes things that should not work actually do:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="k">while</span><span class="p">(</span><span class="n">c</span><span class="o">&lt;</span><span class="mi">10</span><span class="p">);</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">c</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Note the semicolon after <cite>while</cite>. This is an infinite loop.</p>
+<p>C and C++ have an interesting modular structure, where most things are
+statements that return a value. The while loop below can be executed without any
+brackets to the right. Similarly, the brackets can be executed independently of
+anything to their left (they group statements into a single statement).</p>
+</section>
+<section id="virtual-functions-and-inheritance">
+<h2>Virtual functions and inheritance<a class="headerlink" href="#virtual-functions-and-inheritance" title="Permalink to this headline"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>Confusing base class functions and derived class functions</p></li>
+</ul>
+</div></blockquote>
+<p>Virtual function can be binded at runtime based on the reference type to an
+object. They are used to achieve runtime polymorphism. This means you need to
+track what type the object reference is to figure out what function gets called.</p>
+<p>The best way to avoid problems is to give function descriptive names to make it
+clear what they are doing applying to. The function <cite>get_name</cite> of a derived
+class should not be different from the function <cite>get_name</cite> of the base class.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Memory leak due to missing virtual destructor</p></li>
+</ul>
+</div></blockquote>
+<p>If you handle memory dynamically, you should usually add a virtual destructor.
+A standard destructor does not get called when a derived class object gets
+destroyed.</p>
+<p>The following may not call the destructor for MyClass:</p>
+<div class="highlight-C++ notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">MyClass</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">MyBase</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="o">~</span><span class="n">MyClass</span><span class="p">(){}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="n">Myclass</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">MyClass</span><span class="p">();</span><span class="w"></span>
+<span class="n">MyBase</span><span class="w"> </span><span class="o">*</span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="w"></span>
+<span class="k">delete</span><span class="w"> </span><span class="n">b</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Polymorphism only works for references. If you pass by value or make a copy,
+in the base class, information of derived classes is lost.</p></li>
+</ul>
+<div class="highlight-C++ notranslate"><div class="highlight"><pre><span></span><span class="n">MyClass</span><span class="w"> </span><span class="n">a</span><span class="p">;</span><span class="w"></span>
+<span class="n">Baseclass</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">;</span><span class="w">       </span><span class="c1">// if you make a copy</span>
+<span class="n">b</span><span class="p">.</span><span class="n">my_class_function</span><span class="p">();</span><span class="w"> </span><span class="c1">// this does not work</span>
+</pre></div>
+</div>
+</section>
+<section id="returning-by-reference-or-pointer">
+<h2>Returning by Reference or Pointer<a class="headerlink" href="#returning-by-reference-or-pointer" title="Permalink to this headline"></a></h2>
+<p>Using pointers (C) and references (C++) to return values removes a copy
+operation. This can affect performance, especially in C++ where a copy can call
+a constructor.</p>
+<p>The problem is when you return something from the function scope, and it gets
+deallocated immediately on return:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">divide</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">){</span><span class="w"></span>
+<span class="w">  </span><span class="kt">double</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="o">/</span><span class="n">y</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="o">&amp;</span><span class="n">result</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>A bit more subtle example in C++:</p></li>
+</ul>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="n">class</span><span class="w"> </span><span class="n">MyClass</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="kt">double</span><span class="w"> </span><span class="n">a</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="n">public</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="n">MyClass</span><span class="p">(){</span><span class="w"></span>
+<span class="w">    </span><span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="kt">double</span><span class="w"> </span><span class="o">&amp;</span><span class="n">get_a</span><span class="p">(){</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span><span class="w"></span>
+<span class="w">  </span><span class="n">MyClass</span><span class="w"> </span><span class="o">*</span><span class="n">myClass</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="n">MyClass</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="kt">double</span><span class="w"> </span><span class="o">&amp;</span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">myClass</span><span class="o">-&gt;</span><span class="n">get_a</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span><span class="w"> </span><span class="c1">// 1</span>
+<span class="w">  </span><span class="n">delete</span><span class="w"> </span><span class="n">myClass</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span><span class="w"> </span><span class="c1">// 0 or some random value</span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Note that most compilers optimize the copy away in any case.</p></li>
+</ul>
+</section>
+<section id="exception-in-a-destructor">
+<h2>Exception in a Destructor<a class="headerlink" href="#exception-in-a-destructor" title="Permalink to this headline"></a></h2>
+<p>We will talk more about exceptions later, but here is an example of how things
+can go wrong:</p>
+<div class="highlight-C++ notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">MyClass</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">a</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="n">MyClass</span><span class="p">(){</span><span class="w"></span>
+<span class="w">    </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">malloc</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">));</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="o">~</span><span class="n">MyClass</span><span class="p">(){</span><span class="w"></span>
+<span class="w">    </span><span class="n">do_something</span><span class="p">(</span><span class="n">a</span><span class="p">);</span><span class="w"> </span><span class="c1">// What if this throws an exception?</span>
+<span class="w">    </span><span class="n">free</span><span class="p">(</span><span class="n">a</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+<p>This is a problem if the exception is caught. The <cite>free</cite> function was never
+called.</p>
+</section>
+<section id="using-a-freed-pointer-or-old-reference">
+<h2>Using a freed pointer or old reference<a class="headerlink" href="#using-a-freed-pointer-or-old-reference" title="Permalink to this headline"></a></h2>
+<p>Very similar to above. This happens when you fetch a pointer or a reference to
+memory handled by a library. If the library decides to re-allocate the memory,
+or to move to pointer for any other reason, your pointer will no longer work.</p>
+<div class="highlight-C++ notranslate"><div class="highlight"><pre><span></span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">};</span><span class="w"></span>
+<span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">pointer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">data</span><span class="p">();</span><span class="w"></span>
+<span class="n">a</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span><span class="w"></span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">pointer</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span><span class="w"> </span><span class="c1">// this might not work</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../introduction/" class="btn btn-neutral float-left" title="Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../errors_and_exceptions/" class="btn btn-neutral float-right" title="Errors and Exceptions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jarno Rantaharju.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

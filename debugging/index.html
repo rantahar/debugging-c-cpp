@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Debugging &mdash; Debugging C  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/mystnb.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sphinx_lesson.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sphinx_rtd_theme_ext_color_contrast.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/minipres.js"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="Exercises" href="../exercises/" />
+    <link rel="prev" title="Finding Memory Issues" href="../memory/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../" class="icon icon-home"> Debugging C
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../c_cpp_topics/">Things about C/C++</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../errors_and_exceptions/">Errors and Exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../memory/">Finding Memory Issues</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Debugging</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#gdb">gdb</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#debugging-in-visual-studio-code">Debugging in Visual Studio Code</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../exercises/">Exercises</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">Debugging C</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home"></a> &raquo;</li>
+      <li>Debugging</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/debugging.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="debugging">
+<h1>Debugging<a class="headerlink" href="#debugging" title="Permalink to this headline"></a></h1>
+<section id="gdb">
+<h2>gdb<a class="headerlink" href="#gdb" title="Permalink to this headline"></a></h2>
+<p>The Gnu debugger (gdb), and many other similar programs, allow you to stop your
+program and inspect the state different variables, or even modify them before
+continuing the run. This is useful for finding more complicated issues.</p>
+<p>Here are some useful gdb commands:</p>
+<blockquote>
+<div><ul>
+<li><p><strong>run:</strong> start running the program. It will run until it encounters a
+breakpoint or until the program finishes.</p></li>
+<li><p><strong>break:</strong> Add a breakpoint</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">break</span> <span class="pre">main</span></code>: Add a breakpoint the start of the program.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">break</span> <span class="pre">function_name</span></code>: Add a breakpoint at the beginning of the
+function <code class="docutils literal notranslate"><span class="pre">function_name</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">break</span> <span class="pre">filename:N</span></code>: Add a breakpoint in file filename on line N</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>delete N:</strong> Delete breakpoint number N</p></li>
+<li><p><strong>list:</strong> Print a few lines of code around the current position.</p></li>
+<li><p><strong>where:</strong> Print the current position and the functions that were called</p></li>
+<li><p><strong>print variable:</strong> Display the value of a variable.
+to get there (same as the stack trace printed when an exception is raised).</p></li>
+<li><p><strong>next:</strong> Execute the current line and move to the next one.</p></li>
+<li><p><strong>step:</strong> If the line contains a function, move into it. Otherwise execute
+the current line.</p></li>
+<li><p><strong>continue:</strong> Run until the next <cite>pdb.set_trace</cite></p></li>
+<li><p><strong>up</strong>: Move to the function that called this one (up the stack).</p></li>
+<li><p><strong>down</strong>: Move to the function called from this one (down the stack).</p></li>
+<li><p><strong>display variable:</strong> Display the value of a variable. It will be printed after each command.</p></li>
+<li><p><strong>call expression:</strong> Run arbitrary code in the debugger.</p></li>
+</ul>
+</div></blockquote>
+<p>Let’s look at the memory_leak example</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>gdb memory_leak
+<span class="gp gp-VirtualEnv">(gdb)</span>
+</pre></div>
+</div>
+<p>First add a breakpoint at main (or wherever you think the bug might be) and
+start the program.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(gdb)</span> <span class="go">break main</span>
+<span class="go">Breakpoint 1 at 0x55555555516e: file /u/24/rantahj1/unix/src/c-debugging/examples/memory_leak.c, line 10.</span>
+<span class="gp gp-VirtualEnv">(gdb)</span> <span class="go">run</span>
+<span class="go">Starting program: /u/24/rantahj1/unix/src/c-debugging/examples/memory_leak</span>
+
+<span class="go">Breakpoint 1, main () at /u/24/rantahj1/unix/src/c-debugging/examples/memory_leak.c:10</span>
+<span class="go">10        int main(){</span>
+<span class="gp gp-VirtualEnv">(gdb)</span>
+</pre></div>
+</div>
+<p>Let’s run the first line and take a look at the variable <code class="docutils literal notranslate"><span class="pre">i</span></code></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(gdb)</span> <span class="go">next</span>
+<span class="go">11            int i=5;</span>
+<span class="gp gp-VirtualEnv">(gdb)</span> <span class="go">next</span>
+<span class="go">12            i = memory_fail(i);</span>
+<span class="gp gp-VirtualEnv">(gdb)</span> <span class="go">print i</span>
+<span class="gp">$</span><span class="nv">1</span> <span class="o">=</span> <span class="m">5</span>
+</pre></div>
+</div>
+<p>When you want to see the details of a function, you use <cite>step</cite> instead of
+<cite>next</cite> to get move into it.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(gdb)</span> <span class="go">step</span>
+<span class="go">memory_fail (i=21845) at /u/24/rantahj1/unix/src/c-debugging/examples/memory_leak.c:4</span>
+<span class="go">4 int memory_fail(int i){</span>
+</pre></div>
+</div>
+<p>This is very useful for figuring out what your code is doing. You can step
+through the program one line at a time and see how the variables change.</p>
+</section>
+<section id="debugging-in-visual-studio-code">
+<h2>Debugging in Visual Studio Code<a class="headerlink" href="#debugging-in-visual-studio-code" title="Permalink to this headline"></a></h2>
+<p>Visual studio Code includes a debugger, that also works on Windows (and programs
+compiled for Windows programs). The interface is graphical, but it has
+essentially the same commands as gdb and any other debugger. To start debugging,
+click the <em>debugger</em> symbol (play button with a bug on it) on the left side.
+The equivalents to the <em>next</em> and <em>step</em> commands are on top of the text view
+and the values of variables are displayed on the left <em>explorer</em> view.</p>
+<p>These elements are highlighted in the image below.</p>
+<img alt="../_images/vs_code_debug.png" src="../_images/vs_code_debug.png" />
+<p>There are many other IDEs for Windows an other operating systems. While the user
+interface can be different, the concepts are the same. You set a breakpoint, run
+the program and inspect (and possible change) the values of variables live as
+the program runs.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Version Control</strong></p>
+<p>Version control programs, such as <cite>git</cite>, are probably the best debugging tool
+there is. You can go back in versions of your program and find where a given
+but was introduced. Knowing what the bug is and looking at the changes is
+usually enough to figure out the problem.</p>
+<p>We will not go into this, since this is mostly about version control systems
+and not about C or C++ specifically. Instead, take a look at the
+<a class="reference external" href="https://coderefinery.github.io/git-intro/archaeology/">CodeRefinery lesson on inspecting history</a>.</p>
+<p>And check the rest of CodeRefinery while you are there.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../memory/" class="btn btn-neutral float-left" title="Finding Memory Issues" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../exercises/" class="btn btn-neutral float-right" title="Exercises" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jarno Rantaharju.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

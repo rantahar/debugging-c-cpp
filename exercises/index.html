@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exercises &mdash; Debugging C  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/mystnb.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sphinx_lesson.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sphinx_rtd_theme_ext_color_contrast.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/minipres.js"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="prev" title="Debugging" href="../debugging/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../" class="icon icon-home"> Debugging C
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../c_cpp_topics/">Things about C/C++</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../errors_and_exceptions/">Errors and Exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../memory/">Finding Memory Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../debugging/">Debugging</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Exercises</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#exercise-1-a-segfault">Exercise 1: A segfault</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#exercise-2-divide-by-zero-c">Exercise 2: Divide by Zero (C++)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#exercise-3-the-double-pendulum-c">Exercise 3: The double pendulum (C)</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">Debugging C</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home"></a> &raquo;</li>
+      <li>Exercises</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/exercises.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="exercises">
+<h1>Exercises<a class="headerlink" href="#exercises" title="Permalink to this headline"></a></h1>
+<section id="exercise-1-a-segfault">
+<h2>Exercise 1: A segfault<a class="headerlink" href="#exercise-1-a-segfault" title="Permalink to this headline"></a></h2>
+<p>Compile and run either
+<a class="reference external" href="https://raw.githubusercontent.com/rantahar/debugging-c-cpp/main/examples/segfault.c">segfault.c</a>
+or
+<a class="reference external" href="https://raw.githubusercontent.com/rantahar/debugging-c-cpp/main/examples/segfault.cpp">segfault.cpp</a>.
+It should cause a segfault.</p>
+<ol class="arabic simple">
+<li><p>What tool would you use to find the problem?</p></li>
+<li><p>Identify the issue. What should the program actually do?</p></li>
+<li><p>Fix the program and test it.</p></li>
+</ol>
+</section>
+<section id="exercise-2-divide-by-zero-c">
+<h2>Exercise 2: Divide by Zero (C++)<a class="headerlink" href="#exercise-2-divide-by-zero-c" title="Permalink to this headline"></a></h2>
+<p>Try compiling and running
+<a class="reference external" href="https://raw.githubusercontent.com/rantahar/debugging-c-cpp/main/examples/divide_by_zero.cpp">divide_by_zero.cpp</a>.
+This one throws an exception rather than just running along with incorrect
+results. That’s nice.</p>
+<ul class="simple">
+<li><p>How would you go about finding the cause of the exception?</p></li>
+<li><p>Use a debugger to inspect the code and look at the values passed to the
+function. What is the problem?</p></li>
+<li><p>How would you fix the issue?</p></li>
+</ul>
+</section>
+<section id="exercise-3-the-double-pendulum-c">
+<h2>Exercise 3: The double pendulum (C)<a class="headerlink" href="#exercise-3-the-double-pendulum-c" title="Permalink to this headline"></a></h2>
+<p>This exercise is longer than the others and the code is more complex. If you
+brought your own code to debug, I suggest you look at that instead.</p>
+<p>The code is at
+<a class="reference external" href="https://raw.githubusercontent.com/rantahar/debugging-c-cpp/main/examples/double_pendulum.c">double_pendulum.c</a>
+It runs a simulation
+of a double pendulum. It has some problems, though.</p>
+<ol class="arabic simple">
+<li><p><strong>Compilation errors</strong></p></li>
+</ol>
+<p>Try compiling the program with</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span> examples
+<span class="gp">$ </span>gcc -g -O2 double_pendulum.c -lm -o double_pendulum
+</pre></div>
+</div>
+<p>The code does not compile. Can you find the problems following hints from
+the compiler or your IDE?</p>
+<ol class="arabic simple" start="2">
+<li><p><strong>Segfault</strong></p></li>
+</ol>
+<p>Once you manage to compile it, run the program with</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>./double_pendulum
+</pre></div>
+</div>
+<p>Now there’s a segmentation fault! Use a debugger
+to find where the segfault happens. Can you fix it?</p>
+<p>Looks like it works! But does it, actually?</p>
+<ol class="arabic simple" start="3">
+<li><p><strong>Memory leak</strong></p></li>
+</ol>
+<p>You have received complaints from users. When the program runs for a long
+time, it takes a lot of memory. Maybe there is a memory leak.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>You can separate valgrind output (and other errors) to a file using</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>valgrind --leak-check<span class="o">=</span>full double_pendulum <span class="m">2</span>&gt; valgrind_errors
+</pre></div>
+</div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p><strong>More?</strong></p></li>
+</ol>
+<p>Can you find another memory issue?</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Use <cite>valgrind tool=memcheck</cite> and let the simulation run for a while.</p>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>What happens when a pendulum does not fit on the screen?</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../debugging/" class="btn btn-neutral float-left" title="Debugging" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jarno Rantaharju.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

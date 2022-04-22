@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Errors and Exceptions &mdash; Debugging C  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/mystnb.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sphinx_lesson.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sphinx_rtd_theme_ext_color_contrast.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/minipres.js"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="Finding Memory Issues" href="../memory/" />
+    <link rel="prev" title="Things about C/C++" href="../c_cpp_topics/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../" class="icon icon-home"> Debugging C
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../c_cpp_topics/">Things about C/C++</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Errors and Exceptions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#manual-error-handling-in-c">Manual error handling in C</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#c-exceptions">C++ Exceptions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../memory/">Finding Memory Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../debugging/">Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../exercises/">Exercises</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">Debugging C</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home"></a> &raquo;</li>
+      <li>Errors and Exceptions</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/errors_and_exceptions.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="errors-and-exceptions">
+<h1>Errors and Exceptions<a class="headerlink" href="#errors-and-exceptions" title="Permalink to this headline"></a></h1>
+<section id="manual-error-handling-in-c">
+<h2>Manual error handling in C<a class="headerlink" href="#manual-error-handling-in-c" title="Permalink to this headline"></a></h2>
+<p>C has no built-in error handling, but there are libraries for this. The most
+common approach is that each function returns and integer error code. By
+convention 0 means success and any other number refers to an error. The caller
+can check the error code and handle it.</p>
+<p>You can use an <cite>enum</cite> to give each error code a sensible name. You can also use
+an array to map each error code to a message string</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="k">enum</span><span class="w"> </span><span class="n">ERROR_CODES</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">MYLIB_SUCCESS</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">MYLIB_IO_ERROR</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">MYLIB_PARAMETER_ERROR</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">MYLIB_LITERARY_ERROR</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">MYLIB_OTHER_ERROR</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="n">string</span><span class="w"> </span><span class="n">error_messages</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="s">&quot;Success&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="s">&quot;An IO error was encountered.&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="s">&quot;My lib received an incorrect parameter.&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="s">&quot;A literary error was found in input parameters.&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="s">&quot;An unexpected error was encountered.&quot;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>In worst cases, when you don’t think the program can recover, you can always
+call <cite>exit(1)</cite> (or any other error code besides 1). You should print and error
+message first.</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">error_code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">my_function</span><span class="p">();</span><span class="w"></span>
+<span class="k">if</span><span class="p">(</span><span class="n">error_code</span><span class="p">){</span><span class="w"></span>
+<span class="w">  </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Error: %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">error_messages</span><span class="p">[</span><span class="n">error_code</span><span class="p">]);</span><span class="w"></span>
+<span class="w">  </span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Always check for possible errors and print the error message.</p></li>
+<li><p>Another convention: Many Unix system calls return <cite>-1</cite> if there was an
+error and <cite>errno</cite> is set to an error code.</p></li>
+</ul>
+<p>So read the manual for the library you are using.</p>
+</section>
+<section id="c-exceptions">
+<h2>C++ Exceptions<a class="headerlink" href="#c-exceptions" title="Permalink to this headline"></a></h2>
+<p>There is a bit more structure around this in C++. Especially, you can catch an
+exception and handle it in code.</p>
+<p>Throwing an exception looks like this:</p>
+<div class="highlight-C++ notranslate"><div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="nf">divide</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">y</span><span class="p">){</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">y</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">){</span><span class="w"></span>
+<span class="w">       </span><span class="k">throw</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;Division by 0&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">x</span><span class="o">/</span><span class="n">y</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>By default this will stop the program and print the message. The other option
+is to handle it in code using the <cite>try</cite> syntax:</p>
+<div class="highlight-C++ notranslate"><div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="nf">try_to_divide</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">){</span><span class="w"></span>
+<span class="w">    </span><span class="k">try</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="kt">double</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">divide</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="w"> </span><span class="o">&amp;</span><span class="p">){</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Return infinity if dividing by zero</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">numeric_limits</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;::</span><span class="n">infinity</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>The above will catch everything that inherits <cite>std::runtime_error</cite>. You can
+create a custom exception type by extending <cite>std::exception</cite> and catch only that.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../c_cpp_topics/" class="btn btn-neutral float-left" title="Things about C/C++" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../memory/" class="btn btn-neutral float-right" title="Finding Memory Issues" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jarno Rantaharju.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

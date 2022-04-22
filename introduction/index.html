@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Introduction &mdash; Debugging C  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/mystnb.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sphinx_lesson.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sphinx_rtd_theme_ext_color_contrast.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/minipres.js"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="Things about C/C++" href="../c_cpp_topics/" />
+    <link rel="prev" title="Debugging C/C++" href="../" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../" class="icon icon-home"> Debugging C
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#learning-outcomes">Learning Outcomes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#debugging">Debugging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#debugging-in-five-steps">Debugging in five steps</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../c_cpp_topics/">Things about C/C++</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../errors_and_exceptions/">Errors and Exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../memory/">Finding Memory Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../debugging/">Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../exercises/">Exercises</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">Debugging C</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home"></a> &raquo;</li>
+      <li>Introduction</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/introduction.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline"></a></h1>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>C or C++. You should have written C or C++ code,
+compiled an executable and run it.</p></li>
+<li><p>command line interface or VS Code. You should know how to
+move to a folder, list files, compile</p></li>
+<li><p>See <a class="reference external" href="https://aaltoscicomp.github.io/linux-shell/the-shell/">here</a> for an introduction to the Linux shell.</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h2>
+<blockquote>
+<div><ul>
+<li><p>You should have a C / C++ compiler installed.</p></li>
+<li><p>Install a debugger.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Linux and Mac: gdb. This is installed with C/C++ compilation tools.</p></li>
+<li><p>Windows: Visual Code with the C/C++ extension.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>Install a memory checker</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference external" href="https://valgrind.org/">Valgrind</a> on Linux or Mac.</p></li>
+<li><p><a class="reference external" href="https://drmemory.org/page_install.html">DrMemory</a> on Windows.
+You can also try this on other systems.</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</section>
+<section id="learning-outcomes">
+<h2>Learning Outcomes<a class="headerlink" href="#learning-outcomes" title="Permalink to this headline"></a></h2>
+<dl class="simple">
+<dt>After this course you will</dt><dd><ul class="simple">
+<li><p>Know which tools to use to inspect your code and find problems (or
+know where to check which tools to use).</p></li>
+<li><p>Know what a segmentation fault is and be able to locate it.</p></li>
+<li><p>Be able to use a debugger (after finding references online).</p></li>
+<li><p>Be able to find memory leaks and other memory issues.</p></li>
+</ul>
+</dd>
+</dl>
+<p>The tools used on this course are also used to debug Fortran and other compiled
+languages. Each language has their own quirks and common problems, so the first
+sections do not apply.</p>
+<section id="debugging">
+<h3>Debugging<a class="headerlink" href="#debugging" title="Permalink to this headline"></a></h3>
+<p>Debugging is the skill of identifying why a program does something
+unexpected. There is a bug when the user expects something to happen,
+but the program does something different. It could be something very
+clear, like throwing an exception, or it could be a misleading UI or
+weird interaction between parts of the program.</p>
+<p>We will mainly concentrate on tools that allow you to find issues and
+inspect the internal state of you program as it run.</p>
+</section>
+<section id="debugging-in-five-steps">
+<h3>Debugging in five steps<a class="headerlink" href="#debugging-in-five-steps" title="Permalink to this headline"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Identify an issue</strong></p>
+<ul class="simple">
+<li><p>Find a problem or receive a report from a user.</p></li>
+<li><p>Get a Segmentation Fault.</p></li>
+<li><p>Find an issue using an analysis tool.</p></li>
+</ul>
+</li>
+<li><p><strong>Isolate the bug</strong></p>
+<ul class="simple">
+<li><p>Reproduce the problem</p></li>
+<li><p>Create a minimal case that causes the problem to occur.</p></li>
+<li><p>(Turn this into a test case)</p></li>
+</ul>
+</li>
+<li><p><strong>Find the erroneous logic</strong></p>
+<ul class="simple">
+<li><p>This can be in a single location, or an interaction between
+different parts of the code</p></li>
+</ul>
+</li>
+<li><p><strong>Fix the bug</strong></p>
+<ul class="simple">
+<li><p>Replace the bad code or redo logic</p></li>
+</ul>
+</li>
+<li><p><strong>Test</strong></p>
+<ul class="simple">
+<li><p>Check that the bug is no longer reproduced</p></li>
+<li><p>Check that <strong>everything</strong> that used to work still works.</p></li>
+</ul>
+</li>
+</ol>
+<p>We will mostly concentrate on finding the problem in the code. How you
+find an issue or receive a report depends a lot on your project and is
+not language specific.</p>
+<p>When you publish your code, make sure to include a way for users to
+communicate back to you. For example, if you are using a public
+service such as Github, Gitlab or Bitbucket enable issues.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../" class="btn btn-neutral float-left" title="Debugging C/C++" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../c_cpp_topics/" class="btn btn-neutral float-right" title="Things about C/C++" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jarno Rantaharju.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
